@@ -31,7 +31,7 @@
             width: 100%;
             max-width: 180px;
             height: 180px;
-            object-fit: cover; /* Corta la imagen en cuadrado perfecto sin deformarla */
+            object-fit: cover;
             border-radius: 15px;
             margin-bottom: 10px;
             background-color: #f9f9f9;
@@ -150,7 +150,8 @@
         </div>
 
         <div class="product-card">
-            <img class="product-img" src="placeholder-caliente.jpg" alt="Cortadito"> <h3>Cortadito <span style="font-size:14px; color:#888;">(8oz)</span></h3>
+            <img class="product-img" src="placeholder-caliente.jpg" alt="Cortadito">
+            <h3>Cortadito <span style="font-size:14px; color:#888;">(8oz)</span></h3>
             <p>L. 25.00</p>
             <div class="controls">
                 <button type="button" class="btn-qty" onclick="cambiarSimple('c_cort8', -1)">-</button>
@@ -190,7 +191,7 @@
         </div>
 
         <div class="product-card">
-            <img class="product-img" src="bombón.jpeg" alt="Café Bombón">
+            <img class="product-img" src="bombon.jpg" alt="Café Bombón">
             <h3>Café Bombón <span style="font-size:14px; color:#888;">(8oz)</span></h3>
             <p>L. 65.00</p>
             <div class="controls">
@@ -257,7 +258,7 @@
         </div>
 
         <div class="product-card">
-            <img class="product-img" src="té.jpg" alt="Té Sabores">
+            <img class="product-img" src="te.jpg" alt="Té Sabores">
             <h3>Té (Sabores) <span style="font-size:14px; color:#888;">(12oz)</span></h3>
             <p>L. 25.00</p>
             <div class="controls">
@@ -305,6 +306,16 @@
 
     <div class="footer-order">
         <div class="total-container">Total a Pagar: L. <span id="total-general">0.00</span></div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="font-weight: bold; color: #333; display: block; margin-bottom: 8px;">Método de Pago:</label>
+            <select id="metodo-pago" class="obs-input" style="width: 90%; max-width: 500px;">
+                <option value="Efectivo">💵 Efectivo (Pagar en caja)</option>
+                <option value="Tarjeta">💳 Tarjeta (Pagar en caja)</option>
+                <option value="Transferencia">📱 Transferencia Bancaria</option>
+            </select>
+        </div>
+
         <input type="text" id="observaciones" class="obs-input" placeholder="¿Observaciones? (Ej: Leche descremada, sin azúcar...)">
         <br>
         <button type="button" class="btn-confirm" onclick="enviarPedido()">CONFIRMAR PEDIDO</button>
@@ -330,7 +341,7 @@
         'c_cort8': { nombre: 'Cortadito 8oz', precio: 25 },
         'c_cap8': { nombre: 'Capuchino 8oz', precio: 60 },
         'c_cap12': { nombre: 'Capuchino 12oz', precio: 65 },
-        'c_lat8': { nombre: 'Latte 8oz', precio: 60 },
+        'c_lat8': { font: 'Latte 8oz', precio: 60 },
         'c_lat12': { nombre: 'Latte 12oz', precio: 65 },
         'c_bom8': { nombre: 'Café Bombón 8oz', precio: 65 },
         'c_moc12': { nombre: 'Mocha 12oz', precio: 70 },
@@ -448,6 +459,7 @@
         }
 
         const obs = document.getElementById('observaciones').value;
+        const pago = document.getElementById('metodo-pago').value;
         const orden = Math.floor(Math.random() * 90) + 10;
         const totalTexto = "L. " + acumulado.toFixed(2);
 
@@ -456,6 +468,9 @@
         formData.append("entry.1139720569", orden);
         formData.append("entry.1093917841", obs);
         formData.append("entry.801011885", totalTexto); 
+        
+        // Cuando configures el ID de pago en tu formulario, descomenta la línea de abajo y pon su entry correspondiente:
+        // formData.append("entry.PON_AQUI_EL_ID_DE_PAGO", pago); 
 
         fetch("https://docs.google.com/forms/d/1_XJMvDDZEmWozeLuPPqkpL7ytOV6bg8X5iH1beyeYWE/formResponse", {
             method: "POST",
