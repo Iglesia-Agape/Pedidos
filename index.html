@@ -26,16 +26,30 @@
         }
         .product-card { background: white; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
-        /* Control de Imágenes del Menú - Ajustado para que NO se corten y tengan fondo blanco */
+        /* Título de subsección dentro del Grid */
+        .row-titulo {
+            grid-column: 1 / -1;
+            margin: 15px 0 5px 0;
+            font-size: 24px;
+            color: #333;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 5px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        /* Control de Imágenes del Menú - Forzado con fondo blanco */
         .product-img {
             width: 100%;
             max-width: 180px;
             height: 180px;
-            object-fit: contain;      /* Cambiado a contain para mostrar la imagen completa sin recortes */
+            object-fit: contain;      
             border-radius: 15px;
             margin-bottom: 10px;
-            background-color: #ffffff; /* Asegura fondo blanco puro detrás de la imagen */
-            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05); /* Opcional: sutil borde interno para imágenes muy blancas */
+            background-color: #ffffff !important; 
+            display: inline-block;
+            box-sizing: border-box;
+            padding: 4px;
         }
 
         .product-card h3 { margin: 10px 0 5px 0; font-size: 18px; color: #333; }
@@ -99,27 +113,80 @@
         <button class="tab-btn" onclick="mostrarSeccion('heladas', this)">🥤 Bebidas Frías</button>
     </div>
 
+    <!-- SECCIÓN COMIDA ACTUALIZADA -->
     <div id="comida" class="seccion-productos active menu-container">
+        
+        <!-- Otras comidas (Arriba) -->
         <div class="product-card">
-            <img class="product-img" src="placeholder-comida.jpg" alt="Hamburguesa">
-            <h3>Hamburguesa Especial</h3>
+            <img class="product-img" src="placeholder-comida.jpg" alt="Baleadas">
+            <h3>Baleadas</h3>
+            <p>L. 60.00</p>
+            <div class="controls">
+                <button type="button" class="btn-qty" onclick="cambiarSimple('p_baleada', -1)">-</button>
+                <b id="p_baleada" style="font-size: 24px;">0</b>
+                <button type="button" class="btn-qty" onclick="cambiarSimple('p_baleada', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img class="product-img" src="placeholder-comida.jpg" alt="Nachos">
+            <h3>Nachos</h3>
+            <p>L. 80.00</p>
+            <div class="controls">
+                <button type="button" class="btn-qty" onclick="cambiarSimple('p_nachos', -1)">-</button>
+                <b id="p_nachos" style="font-size: 24px;">0</b>
+                <button type="button" class="btn-qty" onclick="cambiarSimple('p_nachos', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img class="product-img" src="placeholder-comida.jpg" alt="Burritas">
+            <h3>Burritas</h3>
+            <p>L. 70.00</p>
+            <div class="controls">
+                <button type="button" class="btn-qty" onclick="cambiarSimple('p_burrita', -1)">-</button>
+                <b id="p_burrita" style="font-size: 24px;">0</b>
+                <button type="button" class="btn-qty" onclick="cambiarSimple('p_burrita', 1)">+</button>
+            </div>
+        </div>
+
+        <!-- Título de la subsección Almuerzos -->
+        <div class="row-titulo">🍲 Almuerzos</div>
+
+        <!-- Opciones de Almuerzos (Abajo) -->
+        <div class="product-card">
+            <img class="product-img" src="placeholder-comida.jpg" alt="Pollo, arroz y ensalada verde">
+            <h3>Pollo, Arroz y Ensalada Verde</h3>
+            <p>L. 140.00</p>
+            <div class="controls">
+                <button type="button" class="btn-qty" onclick="cambiarSimple('p_almuerzo1', -1)">-</button>
+                <b id="p_almuerzo1" style="font-size: 24px;">0</b>
+                <button type="button" class="btn-qty" onclick="cambiarSimple('p_almuerzo1', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img class="product-img" src="placeholder-comida.jpg" alt="Chuleta ahumada, arroz y ensalada">
+            <h3>Chuleta Ahumada, Arroz y Ensalada</h3>
+            <p>L. 145.00</p>
+            <div class="controls">
+                <button type="button" class="btn-qty" onclick="cambiarSimple('p_almuerzo2', -1)">-</button>
+                <b id="p_almuerzo2" style="font-size: 24px;">0</b>
+                <button type="button" class="btn-qty" onclick="cambiarSimple('p_almuerzo2', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img class="product-img" src="placeholder-comida.jpg" alt="Carne asada, arroz, frijoles y queso">
+            <h3>Carne Asada, Arroz, Frijoles y Queso</h3>
             <p>L. 150.00</p>
             <div class="controls">
-                <button type="button" class="btn-qty" onclick="cambiarSimple('p_comida1', -1)">-</button>
-                <b id="p_comida1" style="font-size: 24px;">0</b>
-                <button type="button" class="btn-qty" onclick="cambiarSimple('p_comida1', 1)">+</button>
+                <button type="button" class="btn-qty" onclick="cambiarSimple('p_almuerzo3', -1)">-</button>
+                <b id="p_almuerzo3" style="font-size: 24px;">0</b>
+                <button type="button" class="btn-qty" onclick="cambiarSimple('p_almuerzo3', 1)">+</button>
             </div>
         </div>
-        <div class="product-card">
-            <img class="product-img" src="placeholder-comida.jpg" alt="Pizza">
-            <h3>Pizza Personal</h3>
-            <p>L. 120.00</p>
-            <div class="controls">
-                <button type="button" class="btn-qty" onclick="cambiarSimple('p_comida2', -1)">-</button>
-                <b id="p_comida2" style="font-size: 24px;">0</b>
-                <button type="button" class="btn-qty" onclick="cambiarSimple('p_comida2', 1)">+</button>
-            </div>
-        </div>
+
     </div>
 
     <div id="calientes" class="seccion-productos menu-container">
@@ -504,8 +571,12 @@
 
 <script>
     const MENU = {
-        'p_comida1': { nombre: 'Hamburguesa Especial', precio: 150 },
-        'p_comida2': { nombre: 'Pizza Personal', precio: 120 },
+        'p_baleada': { nombre: 'Baleadas', precio: 60 },
+        'p_nachos': { nombre: 'Nachos', precio: 80 },
+        'p_burrita': { nombre: 'Burritas', precio: 70 },
+        'p_almuerzo1': { nombre: 'Pollo, Arroz y Ensalada Verde', precio: 140 },
+        'p_almuerzo2': { nombre: 'Chuleta Ahumada, Arroz y Ensalada', precio: 145 },
+        'p_almuerzo3': { nombre: 'Carne Asada, Arroz, Frijoles y Queso', precio: 150 },
         'c_ame8': { nombre: 'Americano 8oz', precio: 35 },
         'c_ame12': { nombre: 'Americano 12oz', precio: 40 },
         'c_esp8': { nombre: 'Espresso 8oz', precio: 25 },
