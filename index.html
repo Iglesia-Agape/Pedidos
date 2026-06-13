@@ -26,15 +26,16 @@
         }
         .product-card { background: white; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
-        /* Control de Imágenes del Menú */
+        /* Control de Imágenes del Menú - Ajustado para que NO se corten y tengan fondo blanco */
         .product-img {
             width: 100%;
             max-width: 180px;
             height: 180px;
-            object-fit: cover;
+            object-fit: contain;      /* Cambiado a contain para mostrar la imagen completa sin recortes */
             border-radius: 15px;
             margin-bottom: 10px;
-            background-color: #f9f9f9;
+            background-color: #ffffff; /* Asegura fondo blanco puro detrás de la imagen */
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05); /* Opcional: sutil borde interno para imágenes muy blancas */
         }
 
         .product-card h3 { margin: 10px 0 5px 0; font-size: 18px; color: #333; }
