@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#2C1810">
+<title>Resumen del día · Ágape Coffee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --espresso:#2C1810;
+    --tostado:#6F4E37;
+    --caramelo:#C99B5C;
+    --crema:#F7F1E6;
+    --crema-2:#FBF7EF;
+    --blanco:#FFFFFF;
+    --salvia:#3D5A45;
+    --salvia-dark:#2E4536;
+    --rojo:#A3432F;
+    --linea:#E6DCC8;
+    --sombra:0 8px 24px rgba(44,24,16,0.08);
+    --sombra-fuerte:0 14px 34px rgba(44,24,16,0.16);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'Inter',system-ui,sans-serif; background:var(--crema);
+    color:var(--espresso); min-height:100vh;
+  }
+  h1,h2{font-family:'Fraunces',serif; margin:0;}
+
+  /* ===== PANTALLA DE CLAVE ===== */
+  #pantalla-clave{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:24px;
+  }
+  .clave-card{
+    background:#fff; border-radius:24px; padding:36px 28px; max-width:340px; width:100%;
+    box-shadow:var(--sombra-fuerte); border:1px solid var(--linea); text-align:center;
+  }
+  .clave-card h1{font-size:22px; margin-bottom:6px;}
+  .clave-card p{color:var(--tostado); font-size:14px; margin:0 0 20px;}
+  .clave-input{
+    width:100%; padding:14px; border-radius:12px; border:1.5px solid var(--linea);
+    font-size:18px; text-align:center; letter-spacing:3px; color:var(--espresso);
+    background:var(--crema-2); font-family:'Inter',sans-serif; margin-bottom:12px;
+  }
+  .clave-input:focus{outline:none; border-color:var(--caramelo); background:#fff;}
+  .clave-error{color:var(--rojo); font-size:13px; min-height:18px; margin-bottom:8px;}
+  .btn-entrar{
+    width:100%; background:var(--salvia); color:#fff; border:none; padding:14px;
+    border-radius:12px; font-weight:700; font-size:15px; cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+  .btn-entrar:active{background:var(--salvia-dark); transform:scale(0.98);}
+
+  /* ===== PANEL PRINCIPAL ===== */
+  #pantalla-panel{display:none; min-height:100vh; flex-direction:column;}
+  .panel-header{
+    background:linear-gradient(180deg, var(--espresso) 0%, #3a2418 100%);
+    padding:20px 22px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .panel-header h1{color:var(--crema); font-size:19px;}
+  .panel-header .subtitulo{color:var(--caramelo); font-size:12px; letter-spacing:1px; text-transform:uppercase; font-weight:600; margin-top:2px;}
+  .btn-salir{
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14); color:var(--crema);
+    padding:9px 16px; border-radius:999px; font-size:13px; font-weight:600; cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+
+  .panel-body{padding:24px 20px; max-width:480px; margin:0 auto; width:100%; flex:1;}
+
+  .tarjetas-resumen{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px;}
+  .tarjeta-stat{
+    background:#fff; border-radius:20px; padding:22px 18px; text-align:center;
+    box-shadow:var(--sombra); border:1px solid var(--linea);
+  }
+  .tarjeta-stat .stat-numero{
+    font-family:'Fraunces',serif; font-size:40px; font-weight:700; color:var(--salvia); line-height:1;
+  }
+  .tarjeta-stat.total .stat-numero{color:var(--espresso); font-size:24px; white-space:nowrap;}
+  .tarjeta-stat .stat-label{
+    color:var(--tostado); font-size:12.5px; font-weight:600; margin-top:8px;
+    text-transform:uppercase; letter-spacing:.5px;
+  }
+
+  .panel-estado{
+    text-align:center; color:var(--tostado); font-size:13px; margin-bottom:18px;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+  }
+  .punto-vivo{
+    width:7px; height:7px; border-radius:50%; background:var(--salvia);
+    display:inline-block; animation:pulso-vivo 2s ease-in-out infinite;
+  }
+  @keyframes pulso-vivo{ 0%,100%{opacity:1;} 50%{opacity:.3;} }
+
+  .btn-actualizar{
+    width:100%; background:var(--crema-2); border:1.5px solid var(--linea); color:var(--espresso);
+    padding:14px; border-radius:12px; font-weight:700; font-size:14.5px; cursor:pointer;
+    font-family:'Inter',sans-serif; display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .btn-actualizar:active{background:var(--linea);}
+  .btn-actualizar.cargando .icono-refrescar{animation:girar 0.8s linear infinite;}
+  @keyframes girar{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+
+  .panel-error{
+    background:#fdf0ec; border:1px solid #e8c4b5; color:var(--rojo);
+    padding:14px; border-radius:12px; font-size:13.5px; margin-bottom:16px; text-align:center;
+    display:none;
+  }
+  .panel-error.show{display:block;}
+
+  @media (min-width: 640px){
+    .tarjetas-resumen{grid-template-columns:1fr 1fr;}
+    .tarjeta-stat .stat-numero{font-size:48px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="pantalla-clave">
+  <div class="clave-card">
+    <h1>Resumen del día</h1>
+    <p>Ágape Coffee · acceso solo para el equipo</p>
+    <input type="password" inputmode="numeric" id="input-clave" class="clave-input" placeholder="••••" maxlength="12" autocomplete="off">
+    <p class="clave-error" id="clave-error"></p>
+    <button type="button" class="btn-entrar" onclick="intentarEntrar()">Entrar</button>
+  </div>
+</div>
+
+<div id="pantalla-panel">
+  <div class="panel-header">
+    <div>
+      <h1>Ágape Coffee</h1>
+      <div class="subtitulo">Resumen del día</div>
+    </div>
+    <button type="button" class="btn-salir" onclick="salirDelPanel()">Salir</button>
+  </div>
+
+  <div class="panel-body">
+    <p class="panel-error" id="panel-error"></p>
+
+    <div class="tarjetas-resumen">
+      <div class="tarjeta-stat">
+        <div class="stat-numero" id="stat-pedidos">--</div>
+        <div class="stat-label">Pedidos hoy</div>
+      </div>
+      <div class="tarjeta-stat total">
+        <div class="stat-numero" id="stat-total">--</div>
+        <div class="stat-label">Total vendido</div>
+      </div>
+    </div>
+
+    <p class="panel-estado">
+      <span class="punto-vivo" id="punto-vivo"></span>
+      <span id="texto-estado">Cargando...</span>
+    </p>
+
+    <button type="button" class="btn-actualizar" id="btn-actualizar" onclick="cargarResumen()">
+      <span class="icono-refrescar">↻</span> Actualizar ahora
+    </button>
+  </div>
+</div>
+
+<script>
+// La misma clave para todo el equipo. No es seguridad bancaria, es solo para
+// que un cliente curioso no entre por accidente si comparten el link.
+const CLAVE_PANEL = "agape2026";
+
+const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzJ1uayseIfS2ejKSzQhHdXWQELLZ41bO-42Cfg0QfMpuyxUgMZzlzbjnfq_j9qrx8ixA/exec";
+
+function intentarEntrar(){
+  const input = document.getElementById('input-clave');
+  const error = document.getElementById('clave-error');
+  if(input.value.trim() === CLAVE_PANEL){
+    sessionStorage.setItem('agape_panel_autenticado', '1');
+    mostrarPanel();
+  } else {
+    error.innerText = "Clave incorrecta, intenta de nuevo.";
+    input.value = '';
+    input.focus();
+  }
+}
+
+document.getElementById('input-clave').addEventListener('keydown', (e) => {
+  if(e.key === 'Enter') intentarEntrar();
+});
+
+function salirDelPanel(){
+  sessionStorage.removeItem('agape_panel_autenticado');
+  document.getElementById('pantalla-panel').style.display = 'none';
+  document.getElementById('pantalla-clave').style.display = 'flex';
+  document.getElementById('input-clave').value = '';
+  document.getElementById('input-clave').focus();
+}
+
+function mostrarPanel(){
+  document.getElementById('pantalla-clave').style.display = 'none';
+  document.getElementById('pantalla-panel').style.display = 'flex';
+  cargarResumen();
+}
+
+async function cargarResumen(){
+  const btn = document.getElementById('btn-actualizar');
+  const estado = document.getElementById('texto-estado');
+  const errorBox = document.getElementById('panel-error');
+  const puntoVivo = document.getElementById('punto-vivo');
+
+  btn.classList.add('cargando');
+  btn.disabled = true;
+  estado.innerText = 'Actualizando...';
+  errorBox.classList.remove('show');
+  puntoVivo.style.background = 'var(--salvia)';
+
+  try{
+    const respuesta = await fetch(`${URL_SCRIPT}?accion=resumen`, { cache: 'no-store' });
+    if(!respuesta.ok) throw new Error('El servidor no respondió correctamente.');
+    const datos = await respuesta.json();
+
+    if(datos.error){
+      throw new Error(datos.error);
+    }
+
+    document.getElementById('stat-pedidos').innerText = datos.pedidos;
+    document.getElementById('stat-total').innerText = 'L. ' + Number(datos.total).toFixed(2);
+
+    const ahora = new Date();
+    const hora = ahora.toLocaleTimeString('es-HN', { hour: '2-digit', minute: '2-digit' });
+    estado.innerText = `Actualizado a las ${hora}`;
+
+  }catch(e){
+    errorBox.innerText = 'No se pudo cargar el resumen: ' + e.message;
+    errorBox.classList.add('show');
+    estado.innerText = 'No se pudo actualizar';
+    puntoVivo.style.background = 'var(--rojo)';
+  }
+
+  btn.classList.remove('cargando');
+  btn.disabled = false;
+}
+
+// Si ya inició sesión antes en esta pestaña, no le pedimos la clave de nuevo.
+if(sessionStorage.getItem('agape_panel_autenticado') === '1'){
+  mostrarPanel();
+}
+</script>
+</body>
+</html>
