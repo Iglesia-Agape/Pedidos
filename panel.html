@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#2C1810">
-<title>Resumen del día · Ágape Coffee</title>
+<title>Resumen · Ágape Coffee</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -59,17 +59,45 @@
   #pantalla-panel{display:none; min-height:100vh; flex-direction:column;}
   .panel-header{
     background:linear-gradient(180deg, var(--espresso) 0%, #3a2418 100%);
-    padding:20px 22px; display:flex; align-items:center; justify-content:space-between;
+    padding:20px 22px 0;
+  }
+  .panel-header-top{
+    display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;
   }
   .panel-header h1{color:var(--crema); font-size:19px;}
   .panel-header .subtitulo{color:var(--caramelo); font-size:12px; letter-spacing:1px; text-transform:uppercase; font-weight:600; margin-top:2px;}
   .btn-salir{
     background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14); color:var(--crema);
     padding:9px 16px; border-radius:999px; font-size:13px; font-weight:600; cursor:pointer;
-    font-family:'Inter',sans-serif;
+    font-family:'Inter',sans-serif; flex-shrink:0;
   }
 
-  .panel-body{padding:24px 20px; max-width:480px; margin:0 auto; width:100%; flex:1;}
+  .panel-tabs{display:flex; gap:6px; overflow-x:auto; padding-bottom:14px;}
+  .panel-tab{
+    border:none; background:rgba(255,255,255,0.07); color:#E9DFCE;
+    padding:10px 16px; border-radius:10px; cursor:pointer;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:13.5px;
+    white-space:nowrap; flex-shrink:0;
+  }
+  .panel-tab.active{background:var(--caramelo); color:var(--espresso);}
+
+  .panel-body{padding:20px 20px 40px; max-width:560px; margin:0 auto; width:100%; flex:1;}
+  .vista{display:none;}
+  .vista.active{display:block;}
+
+  .selector-fecha{
+    display:flex; gap:10px; margin-bottom:16px;
+  }
+  .selector-fecha input{
+    flex:1; padding:12px 14px; border-radius:12px; border:1.5px solid var(--linea);
+    font-size:15px; color:var(--espresso); background:#fff; font-family:'Inter',sans-serif;
+  }
+  .selector-fecha input:focus{outline:none; border-color:var(--caramelo);}
+  .btn-ver{
+    background:var(--espresso); color:var(--crema); border:none; padding:0 18px;
+    border-radius:12px; font-weight:700; font-size:14px; cursor:pointer;
+    font-family:'Inter',sans-serif; flex-shrink:0;
+  }
 
   .tarjetas-resumen{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px;}
   .tarjeta-stat{
@@ -107,9 +135,51 @@
   .panel-error{
     background:#fdf0ec; border:1px solid #e8c4b5; color:var(--rojo);
     padding:14px; border-radius:12px; font-size:13.5px; margin-bottom:16px; text-align:center;
-    display:none;
   }
-  .panel-error.show{display:block;}
+  .panel-error.hidden{display:none;}
+
+  /* ===== RANKING DE PRODUCTOS ===== */
+  .seccion-titulo{
+    font-size:15px; font-weight:700; color:var(--tostado); margin:22px 0 10px;
+    text-transform:uppercase; letter-spacing:.5px; font-family:'Inter',sans-serif;
+  }
+  .ranking-lista{
+    background:#fff; border-radius:16px; border:1px solid var(--linea); overflow:hidden;
+    box-shadow:var(--sombra);
+  }
+  .ranking-lista:empty, .dias-lista:empty{
+    border:none; box-shadow:none; background:none;
+  }
+  .ranking-item{
+    display:flex; align-items:center; gap:12px; padding:13px 16px;
+    border-bottom:1px solid var(--linea); font-family:'Inter',sans-serif;
+  }
+  .ranking-item:last-child{border-bottom:none;}
+  .ranking-pos{
+    width:24px; height:24px; border-radius:50%; background:var(--crema-2);
+    color:var(--tostado); font-weight:800; font-size:12px;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .ranking-item:nth-child(1) .ranking-pos{background:var(--caramelo); color:var(--espresso);}
+  .ranking-nombre{flex:1; font-weight:600; color:var(--espresso); font-size:14px;}
+  .ranking-cantidad{font-weight:700; color:var(--salvia); font-size:14px;}
+  .ranking-vacio{
+    text-align:center; color:var(--tostado); padding:24px; font-size:13.5px;
+    font-family:'Inter',sans-serif;
+  }
+
+  /* ===== DESGLOSE POR DIA (mes) ===== */
+  .dias-lista{background:#fff; border-radius:16px; border:1px solid var(--linea); overflow:hidden; box-shadow:var(--sombra);}
+  .dia-item{
+    display:flex; align-items:center; gap:10px; padding:10px 16px;
+    border-bottom:1px solid var(--linea); font-family:'Inter',sans-serif; font-size:13.5px;
+  }
+  .dia-item:last-child{border-bottom:none;}
+  .dia-item.sin-ventas{opacity:0.45;}
+  .dia-fecha{width:38px; color:var(--tostado); font-weight:700; flex-shrink:0;}
+  .dia-barra-wrap{flex:1; background:var(--crema-2); border-radius:6px; height:8px; overflow:hidden;}
+  .dia-barra{height:100%; background:var(--salvia); border-radius:6px;}
+  .dia-total{width:72px; text-align:right; font-weight:700; color:var(--espresso); flex-shrink:0;}
 
   @media (min-width: 640px){
     .tarjetas-resumen{grid-template-columns:1fr 1fr;}
@@ -121,7 +191,7 @@
 
 <div id="pantalla-clave">
   <div class="clave-card">
-    <h1>Resumen del día</h1>
+    <h1>Resumen</h1>
     <p>Ágape Coffee · acceso solo para el equipo</p>
     <input type="password" inputmode="numeric" id="input-clave" class="clave-input" placeholder="••••" maxlength="12" autocomplete="off">
     <p class="clave-error" id="clave-error"></p>
@@ -131,35 +201,94 @@
 
 <div id="pantalla-panel">
   <div class="panel-header">
-    <div>
-      <h1>Ágape Coffee</h1>
-      <div class="subtitulo">Resumen del día</div>
+    <div class="panel-header-top">
+      <div>
+        <h1>Ágape Coffee</h1>
+        <div class="subtitulo">Resumen de ventas</div>
+      </div>
+      <button type="button" class="btn-salir" onclick="salirDelPanel()">Salir</button>
     </div>
-    <button type="button" class="btn-salir" onclick="salirDelPanel()">Salir</button>
+    <nav class="panel-tabs">
+      <button type="button" class="panel-tab active" onclick="cambiarVista('hoy', this)">Hoy</button>
+      <button type="button" class="panel-tab" onclick="cambiarVista('dia', this)">Día específico</button>
+      <button type="button" class="panel-tab" onclick="cambiarVista('mes', this)">Reporte mensual</button>
+    </nav>
   </div>
 
   <div class="panel-body">
-    <p class="panel-error" id="panel-error"></p>
 
-    <div class="tarjetas-resumen">
-      <div class="tarjeta-stat">
-        <div class="stat-numero" id="stat-pedidos">--</div>
-        <div class="stat-label">Pedidos hoy</div>
+    <!-- VISTA: HOY -->
+    <div class="vista active" id="vista-hoy">
+      <p class="panel-error hidden" id="error-hoy"></p>
+      <div class="tarjetas-resumen">
+        <div class="tarjeta-stat">
+          <div class="stat-numero" id="hoy-pedidos">--</div>
+          <div class="stat-label">Pedidos hoy</div>
+        </div>
+        <div class="tarjeta-stat total">
+          <div class="stat-numero" id="hoy-total">--</div>
+          <div class="stat-label">Total vendido</div>
+        </div>
       </div>
-      <div class="tarjeta-stat total">
-        <div class="stat-numero" id="stat-total">--</div>
-        <div class="stat-label">Total vendido</div>
-      </div>
+      <p class="panel-estado">
+        <span class="punto-vivo" id="hoy-punto-vivo"></span>
+        <span id="hoy-estado">Cargando...</span>
+      </p>
+      <button type="button" class="btn-actualizar" id="hoy-btn-actualizar" onclick="cargarHoy()">
+        <span class="icono-refrescar">↻</span> Actualizar ahora
+      </button>
+
+      <div class="seccion-titulo">Más vendidos hoy</div>
+      <div class="ranking-lista" id="hoy-ranking"></div>
     </div>
 
-    <p class="panel-estado">
-      <span class="punto-vivo" id="punto-vivo"></span>
-      <span id="texto-estado">Cargando...</span>
-    </p>
+    <!-- VISTA: DÍA ESPECÍFICO -->
+    <div class="vista" id="vista-dia">
+      <div class="selector-fecha">
+        <input type="date" id="input-fecha-dia">
+        <button type="button" class="btn-ver" onclick="cargarDiaEspecifico()">Ver</button>
+      </div>
+      <p class="panel-error hidden" id="error-dia"></p>
+      <div class="tarjetas-resumen">
+        <div class="tarjeta-stat">
+          <div class="stat-numero" id="dia-pedidos">--</div>
+          <div class="stat-label">Pedidos</div>
+        </div>
+        <div class="tarjeta-stat total">
+          <div class="stat-numero" id="dia-total">--</div>
+          <div class="stat-label">Total vendido</div>
+        </div>
+      </div>
 
-    <button type="button" class="btn-actualizar" id="btn-actualizar" onclick="cargarResumen()">
-      <span class="icono-refrescar">↻</span> Actualizar ahora
-    </button>
+      <div class="seccion-titulo">Más vendidos ese día</div>
+      <div class="ranking-lista" id="dia-ranking"></div>
+    </div>
+
+    <!-- VISTA: REPORTE MENSUAL -->
+    <div class="vista" id="vista-mes">
+      <div class="selector-fecha">
+        <input type="month" id="input-mes">
+        <button type="button" class="btn-ver" onclick="cargarMes()">Ver</button>
+      </div>
+      <p class="panel-error hidden" id="error-mes"></p>
+      <div class="tarjetas-resumen">
+        <div class="tarjeta-stat">
+          <div class="stat-numero" id="mes-pedidos">--</div>
+          <div class="stat-label">Pedidos del mes</div>
+        </div>
+        <div class="tarjeta-stat total">
+          <div class="stat-numero" id="mes-total">--</div>
+          <div class="stat-label">Total del mes</div>
+        </div>
+      </div>
+
+      <div class="seccion-titulo">Más vendidos en el mes</div>
+      <div class="ranking-lista" id="mes-ranking"></div>
+
+      <div class="seccion-titulo">Ventas por día</div>
+      <div class="dias-lista" id="mes-dias"></div>
+    </div>
+
   </div>
 </div>
 
@@ -198,46 +327,170 @@ function salirDelPanel(){
 function mostrarPanel(){
   document.getElementById('pantalla-clave').style.display = 'none';
   document.getElementById('pantalla-panel').style.display = 'flex';
-  cargarResumen();
+
+  // Valores por defecto: hoy, y el mes actual.
+  const hoy = new Date();
+  const hoyTexto = formatoFechaLocal(hoy);
+  document.getElementById('input-fecha-dia').value = hoyTexto;
+  document.getElementById('input-mes').value = hoyTexto.slice(0, 7);
+
+  cargarHoy();
 }
 
-async function cargarResumen(){
-  const btn = document.getElementById('btn-actualizar');
-  const estado = document.getElementById('texto-estado');
-  const errorBox = document.getElementById('panel-error');
-  const puntoVivo = document.getElementById('punto-vivo');
+function formatoFechaLocal(fecha){
+  const año = fecha.getFullYear();
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+  const dia = String(fecha.getDate()).padStart(2, '0');
+  return `${año}-${mes}-${dia}`;
+}
+
+function cambiarVista(nombre, boton){
+  document.querySelectorAll('.vista').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('vista-' + nombre).classList.add('active');
+  boton.classList.add('active');
+}
+
+function renderRanking(contenedorId, ranking){
+  const cont = document.getElementById(contenedorId);
+  if(!ranking || ranking.length === 0){
+    cont.innerHTML = `<div class="ranking-vacio">Sin ventas registradas en este periodo.</div>`;
+    return;
+  }
+  cont.innerHTML = ranking.slice(0, 10).map((item, i) => `
+    <div class="ranking-item">
+      <span class="ranking-pos">${i+1}</span>
+      <span class="ranking-nombre">${item.nombre}</span>
+      <span class="ranking-cantidad">${item.cantidad}×</span>
+    </div>
+  `).join('');
+}
+
+// ===================== VISTA: HOY =====================
+
+async function cargarHoy(){
+  const btn = document.getElementById('hoy-btn-actualizar');
+  const estado = document.getElementById('hoy-estado');
+  const errorBox = document.getElementById('error-hoy');
+  const puntoVivo = document.getElementById('hoy-punto-vivo');
 
   btn.classList.add('cargando');
   btn.disabled = true;
   estado.innerText = 'Actualizando...';
-  errorBox.classList.remove('show');
+  errorBox.classList.add('hidden');
   puntoVivo.style.background = 'var(--salvia)';
 
   try{
-    const respuesta = await fetch(`${URL_SCRIPT}?accion=resumen`, { cache: 'no-store' });
-    if(!respuesta.ok) throw new Error('El servidor no respondió correctamente.');
-    const datos = await respuesta.json();
+    const datos = await pedirResumen({ accion: 'resumen' });
 
-    if(datos.error){
-      throw new Error(datos.error);
-    }
-
-    document.getElementById('stat-pedidos').innerText = datos.pedidos;
-    document.getElementById('stat-total').innerText = 'L. ' + Number(datos.total).toFixed(2);
+    document.getElementById('hoy-pedidos').innerText = datos.pedidos;
+    document.getElementById('hoy-total').innerText = 'L. ' + Number(datos.total).toFixed(2);
+    renderRanking('hoy-ranking', datos.ranking);
 
     const ahora = new Date();
     const hora = ahora.toLocaleTimeString('es-HN', { hour: '2-digit', minute: '2-digit' });
     estado.innerText = `Actualizado a las ${hora}`;
 
   }catch(e){
-    errorBox.innerText = 'No se pudo cargar el resumen: ' + e.message;
-    errorBox.classList.add('show');
+    errorBox.innerText = 'No se pudo cargar: ' + e.message;
+    errorBox.classList.remove('hidden');
     estado.innerText = 'No se pudo actualizar';
     puntoVivo.style.background = 'var(--rojo)';
+    document.getElementById('hoy-ranking').innerHTML = '';
   }
 
   btn.classList.remove('cargando');
   btn.disabled = false;
+}
+
+// ===================== VISTA: DÍA ESPECÍFICO =====================
+
+async function cargarDiaEspecifico(){
+  const fecha = document.getElementById('input-fecha-dia').value;
+  const errorBox = document.getElementById('error-dia');
+  errorBox.classList.add('hidden');
+
+  if(!fecha){
+    errorBox.innerText = 'Selecciona una fecha primero.';
+    errorBox.classList.remove('hidden');
+    return;
+  }
+
+  document.getElementById('dia-pedidos').innerText = '--';
+  document.getElementById('dia-total').innerText = '--';
+
+  try{
+    const datos = await pedirResumen({ accion: 'resumen', fecha: fecha });
+    document.getElementById('dia-pedidos').innerText = datos.pedidos;
+    document.getElementById('dia-total').innerText = 'L. ' + Number(datos.total).toFixed(2);
+    renderRanking('dia-ranking', datos.ranking);
+  }catch(e){
+    errorBox.innerText = 'No se pudo cargar: ' + e.message;
+    errorBox.classList.remove('hidden');
+  }
+}
+
+// ===================== VISTA: REPORTE MENSUAL =====================
+
+async function cargarMes(){
+  const mes = document.getElementById('input-mes').value;
+  const errorBox = document.getElementById('error-mes');
+  errorBox.classList.add('hidden');
+
+  if(!mes){
+    errorBox.innerText = 'Selecciona un mes primero.';
+    errorBox.classList.remove('hidden');
+    return;
+  }
+
+  document.getElementById('mes-pedidos').innerText = '--';
+  document.getElementById('mes-total').innerText = '--';
+  document.getElementById('mes-dias').innerHTML = '';
+
+  try{
+    const datos = await pedirResumen({ accion: 'reporte_mes', mes: mes });
+    document.getElementById('mes-pedidos').innerText = datos.pedidos;
+    document.getElementById('mes-total').innerText = 'L. ' + Number(datos.total).toFixed(2);
+    renderRanking('mes-ranking', datos.ranking);
+    renderDiasDelMes(datos.por_dia);
+  }catch(e){
+    errorBox.innerText = 'No se pudo cargar: ' + e.message;
+    errorBox.classList.remove('hidden');
+  }
+}
+
+function renderDiasDelMes(porDia){
+  const cont = document.getElementById('mes-dias');
+  if(!porDia || porDia.length === 0){
+    cont.innerHTML = `<div class="ranking-vacio">Sin datos para este mes.</div>`;
+    return;
+  }
+
+  const maxTotal = Math.max(...porDia.map(d => d.total), 1);
+
+  cont.innerHTML = porDia.map(dia => {
+    const numeroDia = dia.fecha.slice(8, 10);
+    const anchoBarra = Math.round((dia.total / maxTotal) * 100);
+    const sinVentas = dia.total === 0;
+    return `
+      <div class="dia-item ${sinVentas ? 'sin-ventas' : ''}">
+        <span class="dia-fecha">${numeroDia}</span>
+        <span class="dia-barra-wrap"><span class="dia-barra" style="width:${anchoBarra}%"></span></span>
+        <span class="dia-total">L. ${dia.total.toFixed(0)}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+// ===================== UTILIDAD COMÚN DE FETCH =====================
+
+async function pedirResumen(parametros){
+  const query = new URLSearchParams(parametros).toString();
+  const respuesta = await fetch(`${URL_SCRIPT}?${query}`, { cache: 'no-store' });
+  if(!respuesta.ok) throw new Error('El servidor no respondió correctamente.');
+  const datos = await respuesta.json();
+  if(datos.error) throw new Error(datos.error);
+  return datos;
 }
 
 // Si ya inició sesión antes en esta pestaña, no le pedimos la clave de nuevo.
